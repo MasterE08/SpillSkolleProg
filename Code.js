@@ -1,3 +1,9 @@
+function test()
+{
+    document.getElementById("button").innerHTML="Hello"
+}
+
+
 let arrayWithSprites=[];
 const body = document.getElementById("body");
 const screenDiv = document.getElementById("Screen");
