@@ -1,13 +1,13 @@
-function test()
-{
-    document.getElementById("button").innerHTML="Hello"
-}
 
 
 let arrayWithSprites=[];
 const body = document.getElementById("body");
 const screenDiv = document.getElementById("Screen");
-
+const outp= document.getElementById("out")
+function print(x)
+{
+    outp.innerHTML=x
+}
 class imageList
 {
     #imageIndex
@@ -32,7 +32,7 @@ class imageList
 
 class Sprite
 {
-    constructor(Name, Image, x = 1, y = 1, index = 0, size = 100) 
+    constructor(Name, Image, x = 100, y = 100, index = 0, size = 100) 
         {
         this.name = Name;
         this.visibility = true;
@@ -53,12 +53,14 @@ class Sprite
     ChangeX(movment = 10)
     {
         this.x+=movment;
-    }/*
+        this.image.left=`${this.x}px`
+        this.SetPosition;
+    }
     SetPosition()
     {
-        this.image.style.left=`${x}px`;
-        this.image.style.top=`${y}px`;
-    }*/
+        this.image.style.left=`${this.x}px`;
+        this.image.style.top=`${this.y}px`;
+    }
     ChangrY(Movment)
     {
         this.y+=Movment;
@@ -67,8 +69,9 @@ class Sprite
     {
         this.image = document.createElement("img");
         this.SetImageToChild();
+        this.image.style.position="absolute"
         this.image.classList.add("Spirte")
-        //this.SetPosition()
+        this.SetPosition()
         document.body.appendChild(this.image)
     }
     SetImageToChild()
@@ -96,23 +99,20 @@ player.CreateChild();
 
 
 let int=0;
-
-function event()
+//Test del Start
+function move()
 {
-    if(event.key==='d')
-    {
-        frogRun.ChangeIndex();
-        player.SetImageToChild();
-        player.ChangeX()
-    }
+    player.ChangeX(100)
 }
+//Test del end
 
 
-body.addEventListener("keydown",event);
-const input = document.getElementById("myInput");
-input.addEventListener("keydown", function(event) {
-  if (event.key === "w") {
-    console.log("The 'w' key was pressed.");
-    console.log("Input value: " + input.value);
+body.addEventListener("keydown", function(e) {
+  if (e.key === 'd') {
+
+    frogRun.ChangeIndex();
+    player.SetImageToChild();
+    player.ChangeX(100)
+
   }
 });
