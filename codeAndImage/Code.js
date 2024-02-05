@@ -1,13 +1,61 @@
 
-
+//Varibles 🪺
 let arrayWithSprites=[];
 const body = document.getElementById("body");
 const screenDiv = document.getElementById("Screen");
-const outp= document.getElementById("out")
-function print(x)
+const outp= document.getElementById("out");
+
+
+
+//Screen 🖥️
+class Screen 
 {
-    outp.innerHTML=x
+    constructor()
+    {
+        this.vekst=360/480;
+        this.isHeightWidthCorect;
+        this.CheckWindowProportions();
+        this.CreateScreen();
+        
+    }
+    CheckWindowProportions()
+    {
+        if(window.innerHeight<=window.innerWidth*this.vekst)
+        {
+            this.isHeightWidthCorect=true;
+        }
+        else
+        {
+            this.isHeightWidthCorect=false;
+        }
+    }
+    CreateScreen()
+    {
+        this.ReSizeScreen();
+        screenDiv.style.position="absolute"
+        screenDiv.style.border="solid";
+        screenDiv.style.border="black";
+        screenDiv.style.border="1px solid black";
+        
+    }
+    ReSizeScreen()
+    {
+        if(this.isHeightWidthCorect)
+        {
+            screenDiv.style.width=`480px`
+            screenDiv.style.height=`360px`;
+            alert("hi")   
+        }
+        else
+        {
+            
+            screenDiv.s
+        }
+    }
+
 }
+
+//Images 🖼️
 class imageList
 {
     #imageIndex
@@ -30,6 +78,10 @@ class imageList
     }
 }
 
+
+
+
+//  Sprite 🤖
 class Sprite
 {
     constructor(Name, Image, x = 100, y = 100, index = 0, size = 100) 
@@ -54,7 +106,7 @@ class Sprite
     {
         this.x+=movment;
         this.image.left=`${this.x}px`
-        this.SetPosition;
+        this.SetPosition();
     }
     SetPosition()
     {
@@ -79,6 +131,16 @@ class Sprite
         this.image.src=frogRun.images[frogRun.GetIndex()];
     }
 }
+
+class background
+{
+    constructor()
+    {
+        
+    }
+}
+// Create objects
+const screen = new Screen();
 const player = new Sprite("Player","Images\\NinjaFrog");
 const frogRun = new imageList([
     "Images\\NinjaFrog\\row-1-column-1.png", 
@@ -112,7 +174,7 @@ body.addEventListener("keydown", function(e) {
 
     frogRun.ChangeIndex();
     player.SetImageToChild();
-    player.ChangeX(100)
+    player.ChangeX(10)
 
   }
 });
