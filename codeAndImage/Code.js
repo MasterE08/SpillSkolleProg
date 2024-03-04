@@ -1,18 +1,29 @@
-
 //Varibles 🪺
 let arrayWithSprites=[];
 const body = document.getElementById("body");
 const screenDiv = document.getElementById("Screen");
 const outp= document.getElementById("out");
+const scratchScreenHeightPixels=360;
+const scratchScreenWidthPixels=480;
+//Controls
 
-
-
+//Key 🔑
+class Key
+{
+    constructor()
+    {
+        this.up= false
+        this.down= false
+        this.left= false
+        this.right= false
+    }
+}
 //Screen 🖥️
 class Screen 
 {
     constructor()
     {
-        this.vekst=360/480;
+        this.vekst=480/360;
         this.isHeightWidthCorect;
         this.CheckWindowProportions();
         this.CreateScreen();
@@ -20,7 +31,7 @@ class Screen
     }
     CheckWindowProportions()
     {
-        if(window.innerHeight<=window.innerWidth*this.vekst)
+        if(window.innerWidth<=window.innerHeight*this.vekst)
         {
             this.isHeightWidthCorect=true;
         }
@@ -36,20 +47,20 @@ class Screen
         screenDiv.style.border="solid";
         screenDiv.style.border="black";
         screenDiv.style.border="1px solid black";
-        
+        screenDiv.style.left="50%"
+        screenDiv.style.transform="translate(-50%, 0)"
     }
     ReSizeScreen()
     {
         if(this.isHeightWidthCorect)
         {
-            screenDiv.style.width=`480px`
-            screenDiv.style.height=`360px`;
-            alert("hi")   
+            screenDiv.style.width=`${window.innerWidth-window.innerWidth/100*25}px`;
+            screenDiv.style.height=`${(window.innerWidth-window.innerWidth/100*25)/this.vekst}px`;
         }
         else
         {
-            
-            screenDiv.s
+            screenDiv.style.width=`${(window.innerHeight-window.innerHeight/100*25)*this.vekst}px`;
+            screenDiv.style.height=`${window.innerHeight-window.innerHeight/100*25}px`;
         }
     }
 
@@ -105,26 +116,27 @@ class Sprite
     ChangeX(movment = 10)
     {
         this.x+=movment;
-        this.image.left=`${this.x}px`
         this.SetPosition();
     }
     SetPosition()
     {
         this.image.style.left=`${this.x}px`;
-        this.image.style.top=`${this.y}px`;
+        this.image.style.top=`${this.y*(100/scratchScreenHeightPixels)}%`;
     }
-    ChangrY(Movment)
+
+    ChangeY(Movment)
     {
         this.y+=Movment;
+        this.SetPosition();
     }
     CreateChild()
     {
         this.image = document.createElement("img");
         this.SetImageToChild();
-        this.image.style.position="absolute"
+        this.image.style.position="relative"
         this.image.classList.add("Spirte")
+        screenDiv.appendChild(this.image)
         this.SetPosition()
-        document.body.appendChild(this.image)
     }
     SetImageToChild()
     {
@@ -139,9 +151,20 @@ class background
         
     }
 }
+//Player 🎮
+class Player extends Sprite
+{
+    Images(Images)
+    {
+        this
+    }   
+}
+
+
 // Create objects
+let key = new Key();
 const screen = new Screen();
-const player = new Sprite("Player","Images\\NinjaFrog");
+const player = new Player("Player","Images\\NinjaFrog");
 const frogRun = new imageList([
     "Images\\NinjaFrog\\row-1-column-1.png", 
     "Images\\NinjaFrog\\row-1-column-2.png",
@@ -170,11 +193,54 @@ function move()
 
 
 body.addEventListener("keydown", function(e) {
-  if (e.key === 'd') {
-
-    frogRun.ChangeIndex();
-    player.SetImageToChild();
-    player.ChangeX(10)
+  if (e.key === 'd') 
+  {
+    key.right=true;
 
   }
+  if (e.key==='a')
+  {
+    key.left=true;
+  }
 });
+body.addEventListener("keyup",function(e)
+{
+    if(e.key==='d')
+    {
+        key.right=false;
+    }
+    if(e.key==='a')
+    {
+        key.left=false;
+    }
+})
+body.addEventListener("keydown",function(e)
+{
+
+});
+body.addEventListener("keydown",function(e)
+{
+    if (e.key==='k')
+    {
+        player.SetImageToChild();
+        player.ChangeY(-10)
+    }
+});
+
+//loop ♻️
+const walkingLoop= ()=>
+{
+    if(key.right){    
+        frogRun.ChangeIndex();
+        player.SetImageToChild();
+        player.ChangeX(3)
+    }
+    if(key.left){    
+        frogRun.ChangeIndex();
+        player.SetImageToChild();
+        player.ChangeX(-3)
+    }
+    
+
+}
+setInterval(walkingLoop,15)
