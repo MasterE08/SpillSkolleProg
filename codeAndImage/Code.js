@@ -95,15 +95,16 @@ class imageList
 //  Sprite 🤖
 class Sprite
 {
-    constructor(Name, Image, x = 100, y = 100, index = 0, size = 100) 
+    constructor(Name, Image, WidthAndHeight, pos=[100,100], index = 0, size = 100) 
         {
         this.name = Name;
         this.visibility = true;
         this.imageFoleder = Image;
         this.ImageIndex = index;
         this.size = size;
-        this.x = x;
-        this.y = y;
+        this.heightAndWidth=WidthAndHeight;
+        this.x = pos[0];
+        this.y = pos[1];
         arrayWithSprites.push(this);
         }
     Hide(){
@@ -120,10 +121,17 @@ class Sprite
     }
     SetPosition()
     {
-        this.image.style.left=`${this.x}px`;
-        this.image.style.top=`${this.y*(100/scratchScreenHeightPixels)}%`;
+        this.image.style.left=`${this.ConvertPixelToPrecentagesX(this.x)}%`;
+        this.image.style.top=`${this.ConvertPixelToPrecentagesY(this.y)}%`;
     }
-
+    ConvertPixelToPrecentagesX(pixel)
+    {
+        return 100/scratchScreenWidthPixels*pixel;
+    }
+    ConvertPixelToPrecentagesY(pixel)
+    {
+        return 100/scratchScreenHeightPixels*pixel;
+    }
     ChangeY(Movment)
     {
         this.y+=Movment;
@@ -136,7 +144,14 @@ class Sprite
         this.image.style.position="relative"
         this.image.classList.add("Spirte")
         screenDiv.appendChild(this.image)
+        this.SetSize();
         this.SetPosition()
+
+    }
+    SetSize()
+    {
+        this.image.style.width=`${this.ConvertPixelToPrecentagesX(this.heightAndWidth[1]*(this.size/100))}%`;
+        this.image.style.height=`${this.ConvertPixelToPrecentagesY(this.heightAndWidth[0]*(this.size/100))}%`;
     }
     SetImageToChild()
     {
@@ -149,6 +164,17 @@ class background
     constructor()
     {
         
+    }
+}
+class Level
+{
+
+}
+class Tile extends Sprite
+{
+    constructor()
+    {
+  
     }
 }
 //Player 🎮
@@ -164,7 +190,7 @@ class Player extends Sprite
 // Create objects
 let key = new Key();
 const screen = new Screen();
-const player = new Player("Player","Images\\NinjaFrog");
+const player = new Player("Player", "Images\\NinjaFrog", [32,32], [100,100]);
 const frogRun = new imageList([
     "Images\\NinjaFrog\\row-1-column-1.png", 
     "Images\\NinjaFrog\\row-1-column-2.png",
@@ -184,12 +210,7 @@ player.CreateChild();
 
 
 let int=0;
-//Test del Start
-function move()
-{
-    player.ChangeX(100)
-}
-//Test del end
+
 
 
 body.addEventListener("keydown", function(e) {
